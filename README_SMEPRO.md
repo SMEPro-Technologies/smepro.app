@@ -1,88 +1,176 @@
-# 📘 SMEPro Frontend
-A modern React + Vite single-page application (SPA) for SMEPro Intelligence AI, powered by the Google Gemini API. This frontend provides the Vault, Chat, Dashboard, and AI Safety interfaces for smepro.app, connecting to a backend deployed on Google Cloud Run.
+# SMEPro.app Powered by RI‑42
+SMEPro is a next‑generation intelligence platform built on RI‑42, the unified Reasoning Infrastructure that delivers multi‑persona reasoning, Safe AI governance, PreCognition forecasting, and persistent knowledge continuity across every session.
 
-## ✨ Features
-- **SME ChatWindow**: Engage in contextual, collaborative SME sessions powered by Gemini. Add multiple experts to a single conversation.
-- **SMEVault & Analyzer**: Save, search, and analyze curated knowledge items. Synthesize multiple items to generate new strategies and project briefs.
-- **SMEBuilder & Toolchain**: Convert analysis into tangible assets like READMEs, technical docs, and social media posts using a contextual toolchain.
-- **SMEWorkbench**: A powerful workspace with advanced AI tools for generating and editing text, images, and video from various inputs.
-- **Workshop Mode**: A structured, collaborative environment where a team of AI experts can co-create and refine outputs based on a defined objective and agenda.
-- **Interactive Action Mode**: Turns AI responses into interactive elements for deeper insights, step-by-step execution, and dynamic, context-aware tool suggestions.
-- **SAFE AI**: An interactive page demonstrating SMEPro's commitment to safety and responsible AI.
-- **SMEPro Review**: A competitive analysis tool to compare SMEPro against other top AI platforms.
-- **Full-Featured UI**: Includes a dashboard, session history, profile management, and light/dark modes.
+This repository contains the SMEPro Frontend, a modern React + Vite application that interfaces with RI‑42 through secure Cloud Run APIs.
 
-## 🚀 Tech Stack
-- **React 18 + Vite 5**: For fast development and efficient build tooling.
-- **TypeScript**: Ensures type safety and enhances code maintainability.
-- **TailwindCSS**: A utility-first CSS framework for rapid UI development.
-- **Google GenAI SDK (@google/genai)**: Powers all AI analysis, chat, and generation capabilities.
-- **Stripe Elements (@stripe/react-stripe-js)**: For secure, embedded, production-ready payment processing.
-- **Marked + Highlight.js**: Renders rich markdown content from AI responses.
+✨ **Core Features**
+Multi‑Persona Chat (RI‑42 Orchestration)
+Engage with multiple SME personas (Engineering, Legal, Operations, Safety) in a single session.
+RI‑42 routes each turn through the YBR cognitive pipeline for consistent, auditable reasoning.
 
-## 📂 Project Structure
-This diagram shows the high-level organization of the frontend application.
+**SMEPro Vault**
+Save, search, and analyze knowledge items grounded in RI‑42’s pgvector RAG index and industrial ontologies.
 
-```mermaid
+**SMEBuilder & Toolchain**
+Generate production‑ready assets:
+READMEs, SOPs, briefs, specs, diagrams, and social content.
+
+**Multi-Agent Collaboration**
+A multimodal workspace for text, image, and video generation using Gemini models under RI‑42 governance.
+
+**Workshop Mode**
+A structured environment where multiple personas co‑reason toward a defined objective.
+
+**Interactive Action Mode**
+Turns AI outputs into interactive UI elements for step‑by‑step execution and contextual tool suggestions.
+
+**SAFE AI**
+A frontend visualization of RI‑42’s Safe AI ladder:
+Warning → Advisory → Timeout → Ban.
+
+🧠 **RI‑42 — The Reasoning Infrastructure**
+RI‑42 provides:
+
+YBR 5‑layer cognitive pipeline
+
+Persona orchestration
+
+PreCognition risk forecasting
+
+Safe AI governance
+
+RAG + Vault + Ontologies
+
+Reasoning breadcrumbs
+
+Cohort versioning (RI‑42‑24A, etc.)
+
+The frontend is the interface — RI‑42 is the intelligence.
+
+📘 **Architecture Diagram**
+See: docs/architecture/ri42_frontend_mermaid.md
+
+🚀 Tech Stack
+React 18 + Vite 5
+
+TypeScript
+
+TailwindCSS
+
+Google GenAI SDK
+
+Stripe Elements
+
+Cloud Run deployment
+
+pgvector‑powered backend
+
+📂 Project Structure
+mermaid
 graph TD
     A(SMEPro Repo)
-    A --> F_components(components/)
-    F_components --> F_modals(modals/)
-    F_components --> Fl_ChatWindow(ChatWindow.tsx)
-    F_components --> Fl_Vault(Vault.tsx)
-    F_components --> Fl_SMEWorkbench(SMEWorkbench.tsx)
-    
-    A --> F_public(public/)
-    F_public --> F_schemas(schemas/)
-    
-    A --> F_server(server/)
-    F_server --> Fl_stripe(stripeWebhook.ts)
+    A --> components/
+    A --> services/
+    A --> server/
+    A --> public/
+    A --> src/
+    A --> App.tsx
+    A --> vite.config.ts
+Full repo diagram included in repo_structure.md.
 
-    A --> F_services(services/)
-    F_services --> Fl_gemini(geminiService.ts)
-    F_services --> Fl_backend(backend.ts)
+🧾 Stripe Subscription Flow
+Backend‑driven PaymentIntent creation
 
-    A --> F_src(src/)
-    F_src --> Fl_Capabilities(CapabilitiesPanel.tsx)
+Secure PaymentElement rendering
 
-    A --> Fl_App(App.tsx)
-    A --> Fl_index_tsx(index.tsx)
-    A --> Fl_package(package.json)
-    A --> Fl_vite(vite.config.ts)
-```
+Webhook‑verified subscription lifecycle
 
-## 🔑 Key Architectural Protocols
+Database alignment with Stripe’s model
 
-### Backend-Driven Payment Flow
-The application simulates a production-ready, secure payment flow. Instead of using client-side buy buttons, it follows these steps:
-1.  The user provides their details in the `SignupModal`.
-2.  The frontend calls the (mock) backend service `services/backend.ts` to create a `PaymentIntent`.
-3.  The mock backend simulates creating a Stripe Customer, an Ephemeral Key, and a Payment Intent, returning a `clientSecret` to the frontend. This mirrors the logic of a real Node.js/Python backend.
-4.  The frontend uses this `clientSecret` to securely render the Stripe `PaymentElement`, ensuring no sensitive payment operations occur on the client.
+⚙️ *Running Locally*
+bash
+npm install
+npm run dev
+App runs at:
+http://localhost:5173
 
-### Webhook Verification
-For a real deployment, a backend webhook handler (like the placeholder `server/stripeWebhook.ts`) is **essential**. It listens for events like `payment_intent.succeeded` directly from Stripe. This is the **source of truth** for confirming a payment, creating the user's subscription in the database, and provisioning their account. The frontend should never be trusted as the sole confirmation of a successful payment.
+🌐 *Deployment*
+Optimized for Google Cloud Run.
+Adjust vite.config.ts proxy for your backend URL.
 
-## ⚙️ Getting Started
+📄 *License*
+Proprietary — SMEPro.app
 
-### Prerequisites
-- Node.js (v18 or later recommended)
-- npm or yarn
+3. *Product‑Ready Landing Page (RI‑42 Branding)*
+Below is a marketing‑grade landing page you can paste into Webflow, Next.js, or your marketing site.
 
-### Installation
-1.  **Clone the repository.**
-2.  **Install dependencies:**
-    ```bash
-    npm install
-    ```
+*SMEPro.app — Powered by RI‑42*
+Clarity from Complexity
+SMEPro transforms raw vision into actionable outcomes using RI‑42, the world’s first unified Reasoning Infrastructure designed for industrial, regulated, and high‑stakes environments.
 
-### Running Locally
-1.  The application is configured to use an API key from the environment. In a local Vite environment or a deployed environment, `process.env.API_KEY` will be available.
-2.  **Start the development server:**
-    ```bash
-    npm run dev
-    ```
-The application will be available at `http://localhost:5173`.
+🚀 **Why SMEPro**
+Beyond Chat — The Intelligence Layer
+Standard LLMs forget everything.
+SMEPro builds a persistent Global Intelligence Base that compounds across every session.
 
-## 🌐 Deployment
-This project is configured for deployment to a container-based service like **Google Cloud Run**. The `vite.config.ts` includes a proxy for API calls, which would need to be adjusted for your specific backend URL. The `requirements.txt` and `server/` files provide scaffolding for a corresponding Python/Flask backend.
+Multi‑Persona Reasoning
+Engineering. Legal. Operations. Safety.
+All collaborating in real time through RI‑42’s persona orchestration engine.
+
+Production‑Ready Outputs
+Generate briefs, SOPs, diagrams, code, audits, and strategic plans — not just text.
+
+Industrial Sector Alignment
+Deep NAICS‑mapped reasoning for energy, manufacturing, logistics, healthcare, and more.
+
+Safe AI by Design
+RI‑42 enforces a multi‑layered safety ladder:
+Warning → Advisory → Timeout → Ban  
+with full reasoning breadcrumbs for auditability.
+
+🧠 Powered by RI‑42
+RI‑42 is SMEPro’s reasoning substrate:
+
+YBR 5‑layer cognitive pipeline
+
+PreCognition risk forecasting
+
+Persona orchestration
+
+RAG + Vault + Ontologies
+
+Safe AI governance
+
+Cohort versioning
+
+This is not “AI chat.”
+This is infrastructure‑grade intelligence.
+
+🛠 What You Can Do
+Chat with Multiple Experts
+Bring Engineering, Legal, and Operations into the same conversation.
+
+Build Assets Instantly
+Generate production‑ready documents, code, and workflows.
+
+Analyze Your Knowledge
+Upload SOPs, PDFs, and datasets — RI‑42 grounds every answer.
+
+Run Workshops
+Structured, agenda‑driven collaboration with multiple AI experts.
+
+Generate Media
+Text, images, and video — all governed by RI‑42 safety and context.
+
+📊 Compare SMEPro to Legacy AI
+Feature	Legacy AI	SMEPro
+Architecture	Single Agent	Multi‑Agent Clusters
+Memory	Ephemeral	Global Intelligence Base
+Domain Expertise	Generic	Industrial Sector Alignment
+Outputs	Text	Production‑Ready Assets
+Safety	Basic Filters	RI‑42 Safe AI Governance
+🌐 Start Building with SMEPro
+Your intelligence layer begins here.  
+Turn raw vision into engineered outcomes — safely, reliably, and at scale.
+
+→ Get Started at SMEPro.app
