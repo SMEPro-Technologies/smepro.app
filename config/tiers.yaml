@@ -1,0 +1,19 @@
+tiers:
+  smepro_i:
+    name: "SMEPro I — Scaled Configuration for Margin Efficiency"
+    vault:
+      query_depth_limit: 2
+      query_frequency_limit:
+        per_session: 10
+        per_month: 100
+      dynamic_retrieval: false
+      retrieval_mode: "static_rag"
+    moderation:
+      mode: "pooled"
+      batch_interval_seconds: 300
+    telemetry:
+      log_level: "critical"
+      events:
+        - "persona_switch"
+        - "app_build"
+        - "compliance_trigger"
